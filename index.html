@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+    <h1>🍽️ Restaurant POS System</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price (Rs)</th>
+                <th>Quantity</th>
+                <th>Add</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Burger</td>
+                <td>150</td>
+                <td><input type="number" id="qtyBurger" value="1"></td>
+                <td><button onclick="addItem('Burger',150,'qtyBurger')">Add</button></td>
+            </tr>
+            <tr>
+                <td>Pizza</td>
+                <td>500</td>
+                <td><input type="number" id="qtyPizza" value="1"></td>
+                <td><button onclick="addItem('Pizza',500,'qtyPizza')">Add</button></td>
+            </tr>
+            <tr>
+                <td>Pasta</td>
+                <td>300</td>
+                <td><input type="number" id="qtyPasta" value="1"></td>
+                <td><button onclick="addItem('Pasta',300,'qtyPasta')">Add</button></td>
+            </tr>
+            <tr>
+                <td>Cold Drink</td>
+                <td>80</td>
+                <td><input type="number" id="qtyDrink" value="1"></td>
+                <td><button onclick="addItem('Cold Drink',80,'qtyDrink')">Add</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>🧾 Bill</h2>
+    <ul id="billList"></ul>
+
+    <h3>Total: Rs <span id="total">0</span></h3>
+    <button class="clear" onclick="clearBill()">Clear Bill</button>
+</div>
+
+<div class="container">
+
+<!-- MENU -->
+<div class="menu">
+    <h2>🍴 Restaurant Menu</h2>
+
+    <div class="item">
+        <span>Burger</span>
+        <button onclick="addItem('Burger',120)">₹120</button>
+    </div>
+
+    <div class="item">
+        <span>Pizza</span>
+        <button onclick="addItem('Pizza',300)">₹300</button>
+    </div>
+
+    <div class="item">
+        <span>Biryani</span>
+        <button onclick="addItem('Biryani',250)">₹250</button>
+    </div>
+
+    <div class="item">
+        <span>Cold Drink</span>
+        <button onclick="addItem('Cold Drink',60)">₹60</button>
+    </div>
+</div>
+
+<!-- CART -->
+<div class="cart">
+    <h2>🧾 Order Bill</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="cartItems"></tbody>
+    </table>
+
+    <div class="summary">
+        <div><span>Subtotal</span><span>₹<span id="subTotal">0</span></span></div>
+        <div><span>GST (5%)</span><span>₹<span id="gst">0</span></span></div>
+        <div class="total"><span>Total</span><span>₹<span id="grandTotal">0</span></span></div>
+    </div>
+</div>
+
+</div>
+
+
+<style>
+:root {
+  --main: #ff9f1c;
+  --dark: #1e272e;
+  --glass: rgba(255,255,255,0.15);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(120deg,#2c3e50,#000);
+  color: white;
+}
+
+header {
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr;
+  height: calc(100vh - 70px);
+}
+
+/* MENU */
+.menu {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.menu h2 { color: var(--main); }
+
+.item {
+  background: var(--glass);
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.item button {
+  background: var(--main);
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* CART */
+.cart {
+  padding: 20px;
+  background: rgba(0,0,0,0.4);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+.qty button {
+  padding: 2px 8px;
+  margin: 0 5px;
+}
+
+.summary {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.summary div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.total {
+  font-size: 24px;
+  color: var(--main);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>🍽️ Smart Restaurant POS</h2>
+  <div id="clock"></div>
+</header>
+
+<div class="container">
+
+<div class="menu">
+<h2>Menu</h2>
+
+<div class="item">
+  <span>Burger</span>
+  <button onclick="addItem('Burger',120)">₹120</button>
+</div>
+
+<div class="item">
+  <span>Pizza</span>
+  <button onclick="addItem('Pizza',300)">₹300</button>
+</div>
+
+<div class="item">
+  <span>Biryani</span>
+  <button onclick="addItem('Biryani',250)">₹250</button>
+</div>
+
+<div class="item">
+  <span>Coffee</span>
+  <button onclick="addItem('Coffee',90)">₹90</button>
+</div>
+</div>
+
+<div class="cart">
+<h2>Order Bill</h2>
+
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Price</th>
+</tr>
+</thead>
+<tbody id="cart"></tbody>
+</table>
+
+<div class="summary">
+<div><span>Subtotal</span><span>₹<span id="sub">0</span></span></div>
+<div><span>GST (5%)</span><span>₹<span id="gst">0</span></span></div>
+<div><span>Discount</span><span>₹<span id="disc">50</span></span></div>
+<div class="total"><span>Total</span><span>₹<span id="total">0</span></span></div>
+</div>
+
+<button onclick="window.print()">🖨️ Print Bill</button>
+
+</div>
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
+const DISCOUNT = 50;
+
+function addItem(name, price) {
+  cart[name] ? cart[name].qty++ : cart[name] = {price, qty:1};
+  save();
+}
+
+function save() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  render();
+}
+
+function render() {
+  let tbody = document.getElementById("cart");
+  tbody.innerHTML = "";
+  let subtotal = 0;
+
+  for (let i in cart) {
+    let amt = cart[i].price * cart[i].qty;
+    subtotal += amt;
+
+    tbody.innerHTML += `
+    <tr>
+      <td>${i}</td>
+      <td class="qty">
+        <button onclick="cart['${i}'].qty--; cart['${i}'].qty<=0&&delete cart['${i}']; save()">-</button>
+        ${cart[i].qty}
+        <button onclick="cart['${i}'].qty++; save()">+</button>
+      </td>
+      <td>₹${amt}</td>
+    </tr>`;
+  }
+
+  let gst = subtotal * 0.05;
+  let total = subtotal + gst - DISCOUNT;
+
+  document.getElementById("sub").innerText = subtotal;
+  document.getElementById("gst").innerText = gst.toFixed(2);
+  document.getElementById("disc").innerText = DISCOUNT;
+  document.getElementById("total").innerText = total.toFixed(2);
+}
+
+function clock() {
+  document.getElementById("clock").innerText =
+    new Date().toLocaleTimeString();
+}
+
+setInterval(clock,1000);
+render();
+</script>
+
+
+
+
+
+
+
+<script src="script.js"></script>
+</body>
+</html>
